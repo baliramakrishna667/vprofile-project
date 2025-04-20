@@ -16,6 +16,8 @@ pipeline {
         NEXUSPORT = '8081'
         NEXUS_GRP_REPO = 'vpro-maven-gropu'
         NEXUS_LOGIN = 'nexuslogin'
+        SONARSERVER = 'sonarserver'
+        SONARSCANER = 'sonarscaner'
     }
 
     stages {
@@ -45,19 +47,23 @@ pipeline {
 
         stage('Sonar Analysis') {
             environment {
-                scannerHome = tool 'sonarscaner' // Replace with your actual scanner name
+                scannerHome = tool 'SONARSCANNER' // Replace with your actual scanner name
+            }
+            stage('Sonar Analysis') {
+            environment {
+                scannerHome = tool "${SONARSCANNER}"
             }
             steps {
-                withSonarQubeEnv('sonarserver') { // Replace with your actual SonarQube server name
-                    sh '''${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=vprofile \
-                        -Dsonar.projectName=vprofile \
-                        -Dsonar.projectVersion=1.0 \
-                        -Dsonar.sources=src/ \
-                        -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                        -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                        -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                        -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+               withSonarQubeEnv("${SONARSERVER}") {
+                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                   -Dsonar.projectName=vprofile \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+
                 }
             }
         }
