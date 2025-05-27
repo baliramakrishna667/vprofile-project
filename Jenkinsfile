@@ -28,5 +28,15 @@ pipeline {
                 }
             }
         }
+        stage("unit test") {
+            steps{
+                sh "mvn -s settings.xml test"
+            }
+        }
+        stage("checkstyle analysis") {
+            steps{
+                sh "mvn -s settings.xml checkstyle:checkstyle"
+            }
+        }
     }
 }
