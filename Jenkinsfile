@@ -16,8 +16,8 @@ pipeline {
         NEXUSPORT        = '8081'
         NEXUS_GRP_REPO   = 'vprofile-group'
         NEXUS_LOGIN      = 'nexuslogin'
-        SONARSERVER      = 'sonarserver'     // Must match the name in Jenkins → Configure System → SonarQube
-        SONARSCANNER     = 'sonarscanner'    // Must match the name in Jenkins → Global Tool Configuration
+        SONARSERVER      = 'sonarserver'     // Must match Jenkins > Configure System
+        SONARSCANNER     = 'sonarscanner'    // Must match Jenkins > Global Tool Config
     }
 
     stages {
@@ -53,6 +53,15 @@ pipeline {
             steps {
                 withSonarQubeEnv("${SONARSERVER}") {
                     sh '''
+                        echo "Sonar Scanner Version:"
+                        ${scannerHome}/bin/sonar-scanner --version
+
+                        echo "Listing build outputs..."
+                        ls -l target/
+                        ls -l target/surefire-reports || true
+                        ls -l target/checkstyle-result.xml || true
+
+                        echo "Running SonarQube scan..."
                         ${scannerHome}/bin/sonar-scanner \
                           -Dsonar.projectKey=vprofile \
                           -Dsonar.projectName=vprofile \
@@ -60,7 +69,9 @@ pipeline {
                           -Dsonar.sources=src \
                           -Dsonar.java.binaries=target/classes \
                           -Dsonar.junit.reportsPath=target/surefire-reports \
-                          -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
+                          -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
+                          -Dsonar.working.directory=.scannerwork \
+                          -X
                     '''
                 }
             }
