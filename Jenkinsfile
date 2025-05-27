@@ -40,8 +40,8 @@ pipeline {
                 sh "mvn -s settings.xml checkstyle:checkstyle"
             }
         }
-    }
-    stages('CODE ANALYSIS with SONARQUBE') {
+
+        stage('CODE ANALYSIS with SONARQUBE') {
           
 		  environment {
              scannerHome = tool "${SONARSCANNER}"
@@ -59,5 +59,6 @@ pipeline {
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
           }
-    }
+    } 
+    
 }
