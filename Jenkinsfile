@@ -66,5 +66,14 @@ pipeline {
             }
         }
 
+        satge("quality gate") {
+            steps{
+                timeout(time: 1, unit: 'HOURs') {
+                    waitForQualityGate abortPipeline: true
+
+                }
+            }
+        }
+
     }
 }
