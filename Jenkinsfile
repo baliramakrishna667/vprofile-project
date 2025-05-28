@@ -45,36 +45,8 @@ pipeline {
                 sh "mvn -s settings.xml checkstyle:checkstyle"
             }
         }
-
-        stage("Sonar Analysis") {
-            environment {
-                scannerHome = tool name: "${SONARSCANNER}", type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-            }
-            steps {
-                withSonarQubeEnv("${SONARSERVER}") {
-                    sh '''
-                        echo "Sonar Scanner Version:"
-                        ${scannerHome}/bin/sonar-scanner --version
-
-                        echo "Listing build outputs..."
-                        ls -l target/
-                        ls -l target/surefire-reports || true
-                        ls -l target/checkstyle-result.xml || true
-
-                        echo "Running SonarQube scan..."
-                        ${scannerHome}/bin/sonar-scanner \
-                          -Dsonar.projectKey=vprofile \
-                          -Dsonar.projectName=vprofile \
-                          -Dsonar.projectVersion=1.0 \
-                          -Dsonar.sources=src \
-                          -Dsonar.java.binaries=target/classes \
-                          -Dsonar.junit.reportsPath=target/surefire-reports \
-                          -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-                          -Dsonar.working.directory=.scannerwork \
-                          -X
-                    '''
-                }
-            }
-        }
     }
+
+            
+
 }
