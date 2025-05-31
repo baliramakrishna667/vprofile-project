@@ -31,6 +31,17 @@ phases:
       - apt-get install -y openjdk-17-jdk
       - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
       - mvn sonar:sonar -Dsonar.login=$LOGIN -Dsonar.host.url=$HOST -Dsonar.projectKey=$Project -Dsonar.organization=$Organization -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ -Dsonar.junit.reportsPath=target/surefire-reports/ -Dsonar.jacoco.reportsPath=target/jacoco.exec -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml
+      - echo "Checking if jacoco.exec exists"
+      - ls -al target/
+
+      - echo "Checking Surefire reports"
+      - ls -al target/surefire-reports/
+
+      - echo "Checking Checkstyle report"
+      - ls -al target/checkstyle-result.xml
+   
+      - echo "Running mvn with debug mode"
+      - mvn -X sonar:sonar -Dsonar.login=$LOGIN -Dsonar.hos
       - sleep 5
       - curl https://sonarcloud.io/api/qualitygates/project_status?projectKey=$Project >result.json
       - cat result.json
