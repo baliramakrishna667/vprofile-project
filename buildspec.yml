@@ -12,7 +12,7 @@ phases:
       java: corretto17
     commands:
     - cp ./settings.xml /root/.m2/settings.xml
-    - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain hkhinfotech --domain-owner 381711065088 --region us-east-1 --query authorizationToken --output text`
+    - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain newdomain --domain-owner 381711065088 --region us-east-1 --query authorizationToken --output text`
   pre_build:
     commands:
       - apt-get update
