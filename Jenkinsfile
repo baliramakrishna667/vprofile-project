@@ -63,6 +63,13 @@ pipeline {
                       -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
                 }
             }
+
+        }
+        stage {
+            steps("Quality gates"){
+                timeout(time: 1, unit: 'HOURS') { // Optional timeout
+                waitForQualityGate abortPipeline: true
+            }
         }
 
     }
