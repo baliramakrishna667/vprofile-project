@@ -70,6 +70,7 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') { // Optional timeout
                 waitForQualityGate abortPipeline: true
             }
+           }
         }
 
     }
