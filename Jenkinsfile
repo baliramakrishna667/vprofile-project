@@ -119,7 +119,7 @@ pipeline {
 
         stage("upload image into container") {
             steps{
-                withAWS(credentials: 'awscreds' region: 'ap-south-1'){
+                withAWS(credentials: 'awscreds', region: 'ap-south-1'){
                     sh 'aws ecs update-service --cluster ${cluster} --service ${service} --force-new-deployment'
                 }
             }
