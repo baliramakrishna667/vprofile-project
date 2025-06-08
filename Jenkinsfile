@@ -96,7 +96,7 @@ pipeline {
             }
         }
 
-        stgae("build docker image") {
+        stage("build docker image") {
             steps{
                 script {
                     dockerImage = docker.build(appregistery + ":$BUILD_NUMBER", "./" )
