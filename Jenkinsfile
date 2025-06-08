@@ -96,7 +96,7 @@ pipeline {
             }
         }
 
-        satge("build docker image") {
+        stgae("build docker image") {
             steps{
                 script {
                     dockerImage = docker.build(appregistery + ":$BUILD_NUMBER", "./" )
